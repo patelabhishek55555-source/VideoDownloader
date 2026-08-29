@@ -23,6 +23,11 @@ export interface SafeFetchOptions extends HostCheckOptions {
   body?: string;
   /** Skip the DNS public-range check (used for the configured provider API). */
   skipPublicCheck?: boolean;
+  /**
+   * The target is an operator-configured endpoint (e.g. a self-hosted resolver on
+   * any port). Skip all host checks and fetch it directly — the operator chose it.
+   */
+  trusted?: boolean;
   cache?: RequestCache;
 }
 
@@ -55,15 +60,18 @@ export async function safeFetch(url: string | URL, options: SafeFetchOptions = {
     method = "GET",
     body,
     skipPublicCheck = false,
+    trusted = false,
     allowPrivateForTest = false,
     allowedSuffixes,
     cache,
   } = options;
 
-  if (skipPublicCheck) {
-    assertAllowedHost(url, { allowedSuffixes, allowPrivateForTest });
-  } else {
-    await assertPublicTarget(url, { allowedSuffixes, allowPrivateForTest });
+  if (!trusted) {
+    if (skipPublicCheck) {
+      assertAllowedHost(url, { allowedSuffixes, allowPrivateForTest });
+    } else {
+      await assertPublicTarget(url, { allowedSuffixes, allowPrivateForTest });
+    }
   }
 
   let response: Response;
@@ -86,7 +94,7 @@ export async function safeFetch(url: string | URL, options: SafeFetchOptions = {
     });
   }
 
-  if (!skipPublicCheck && response.url) {
+  if (!trusted && !skipPublicCheck && response.url) {
     // A redirect could have landed somewhere the original host did not.
     try {
       await assertPublicTarget(response.url, { allowedSuffixes, allowPrivateForTest });

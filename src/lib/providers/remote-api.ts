@@ -217,10 +217,9 @@ export function createRemoteApiProvider(options: RemoteApiProviderOptions): Medi
           headers: provider.method === "POST" ? { ...headers, "content-type": "application/json" } : headers,
           timeoutMs: provider.timeoutMs,
           signal: context?.signal,
-          // The resolver is operator-configured, not user supplied, so it may
-          // legitimately live on a private network.
-          skipPublicCheck: true,
-          allowPrivateForTest: true,
+          // The resolver is operator-configured, not user supplied, so it is
+          // trusted and may live on any host/port (e.g. a local yt-dlp wrapper).
+          trusted: true,
         });
       } catch (error) {
         if (error instanceof AppError) throw error;
