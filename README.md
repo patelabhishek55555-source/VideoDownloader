@@ -104,7 +104,22 @@ endpoints only ever fetch URLs this service handed out (they can never be repurp
 }
 ```
 
-Any HTTP service returning that shape works: a self-hosted yt-dlp wrapper or a commercial resolver API.
+Any HTTP service returning that shape works. A ready-to-deploy, yt-dlp-powered self-hosted resolver companion is included in the [`resolver/`](./resolver) directory with Docker and cloud deployment configs.
+
+## Self-hosted resolver companion
+
+An optional, standalone resolver microservice is included in [`resolver/`](./resolver):
+
+- **Local:** `npm run resolver` (or `cd resolver && npm start`)
+- **Docker:** `cd resolver && docker compose up -d`
+- **Cloud:** Ready to deploy on Fly.io, Render, Railway, or VPS.
+
+Once running, point your Next.js app to it via:
+```env
+DOWNLOAD_PROVIDER_BASE_URL=http://localhost:3210
+DOWNLOAD_PROVIDER_API_KEY=your-secret-key  # if API_KEY was set in resolver
+```
+See [`resolver/README.md`](./resolver/README.md) for full setup instructions.
 
 ## Getting started
 
