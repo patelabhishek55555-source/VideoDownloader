@@ -1,0 +1,21 @@
+services:
+  resolver:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: video-downloader-resolver
+    restart: unless-stopped
+    ports:
+      - "3210:3210"
+    environment:
+      - PORT=3210
+      - HOST=0.0.0.0
+      # Optional: set an API key for authentication
+      - API_KEY=
+      # Optional: custom yt-dlp timeout in milliseconds (default: 30000)
+      - TIMEOUT_MS=30000
+      # Optional: maximum concurrent yt-dlp resolutions (default: 8)
+      - MAX_CONCURRENCY=8
+      # Optional: cookies text content or path to cookies.txt file for authenticated sites
+      # - COOKIES_CONTENT=
+      # - COOKIES_FILE=/app/cookies.txt

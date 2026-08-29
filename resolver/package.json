@@ -1,0 +1,22 @@
+{
+  "name": "video-downloader-resolver",
+  "version": "1.0.0",
+  "description": "Self-hosted media resolver service for Video Downloader using yt-dlp.",
+  "main": "server.mjs",
+  "type": "module",
+  "scripts": {
+    "start": "node server.mjs",
+    "dev": "node --watch server.mjs"
+  },
+  "keywords": [
+    "yt-dlp",
+    "video-downloader",
+    "media-resolver",
+    "microservice"
+  ],
+  "author": "",
+  "license": "MIT",
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: video-downloader-resolver
+    env: docker
+    dockerfilePath: Dockerfile
+    dockerContext: .
+    plan: starter
+    region: oregon
+    healthCheckPath: /health
+    envVars:
+      - key: PORT
+        value: 3210
+      - key: API_KEY
+        generateValue: true
